@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import morgan from "morgan";
 import connectDB from "./config/db";
+import notFoundError from "./errors/404";
+import globalError from "./errors/error";
 
 const app = express();
 
@@ -19,6 +21,10 @@ app.get("/", (_: Request, res: Response) => {
     message: "Welcome to the Pet Hotel JSON API server",
   });
 });
+
+//run error middlewares
+app.use(notFoundError);
+app.use(globalError);
 
 app.listen(PORT, () => {
   connectDB();
