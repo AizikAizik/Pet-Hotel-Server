@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import morgan from "morgan";
+import connectDB from "./config/db";
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.get("/", (_: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
+  connectDB();
   console.log(`server is up and running on port ${PORT}`);
 });
