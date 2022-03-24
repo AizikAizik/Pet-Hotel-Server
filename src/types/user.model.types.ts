@@ -13,7 +13,7 @@ interface UserAddress {
 }
 
 interface Pets {
-  pet: pets;
+  pet?: pets;
   breed?: string;
   name: string;
 }
@@ -22,12 +22,12 @@ export interface UserInput {
   email: string;
   fullName: string;
   password: string;
+  isAdmin?: boolean;
 }
 
 export interface UserDocument extends UserInput, Document {
-  isAdmin: boolean;
   address?: UserAddress;
-  pets?: [Pets];
+  pets?: Pets[];
   createdAt: Date;
   updatedAt: Date;
   comparePassword(enteredPassword: string): Promise<boolean>;

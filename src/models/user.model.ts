@@ -41,7 +41,7 @@ const userSchema = new Schema(
       required: true,
       default: false,
     },
-    pets: [petSchema],
+    pets: [{ type: petSchema }],
     address: {
       country: {
         type: String,
@@ -78,7 +78,7 @@ const userSchema = new Schema(
 userSchema.pre("save", async function (this: UserDocument, next: Function) {
   if (!this.isModified("password")) return next();
 
-  // generate salt rounds for hashing
+  // generate salt rounds for hashing the passwords
   const salt = await bcrypt.genSalt(10);
   // set the password to the newly hashed password
   this.password = await bcrypt.hash(this.password, salt);

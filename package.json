@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
     "build": "tsc",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "importData": "ts-node src/seeder.ts",
+    "deleteData": "ts-node src/seeder.ts -d"
   },
   "repository": {
     "type": "git",

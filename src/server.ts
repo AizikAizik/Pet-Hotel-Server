@@ -28,6 +28,6 @@ app.use(notFoundError);
 app.use(globalError);
 
 app.listen(PORT, () => {
-  connectDB();
+  //connectDB();
   console.log(`server is up and running on port ${PORT}`);
 });
