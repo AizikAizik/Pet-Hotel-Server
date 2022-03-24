@@ -23,7 +23,13 @@ class Pets {
   public pet?: PetTypes;
 
   @prop({ required: true })
-  public name?: string;
+  public name!: string;
+
+  @prop()
+  public breed?: string;
+
+  @prop()
+  public image?: string;
 }
 
 class Address {
@@ -33,10 +39,10 @@ class Address {
   @prop({ required: true })
   public state!: string;
 
-  @prop({ required: true })
+  @prop({ required: true, min: -90, max: 90 })
   public latitude!: number;
 
-  @prop({ required: true })
+  @prop({ required: true, min: -180, max: 180 })
   public longitude!: number;
 
   @prop()
