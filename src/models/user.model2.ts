@@ -12,18 +12,19 @@ enum PetTypes {
   CAT = "Cat",
 }
 
-@pre<User>("save", async function (next: Function) {
-  if (!this.isModified("password")) {
-    return next();
-  }
+// @pre<User>("save", async function (next) {
+//   if (!this.isModified("password")) {
+//     next();
+//   }
 
-  // generate salt rounds for hashing the passwords
-  const salt = await bcrypt.genSalt(10);
-  // set the password to the newly hashed password
-  this.password = await bcrypt.hash(this.password, salt);
+//   // generate salt rounds for hashing the passwords
+//   const salt = await bcrypt.genSalt(10);
+//   // set the password to the newly hashed password
+//   const hashedPassword = await bcrypt.hash(this.password, salt);
+//   this.password = hashedPassword;
+//   next();
+// })
 
-  return next();
-})
 class Pets {
   @prop({ enum: PetTypes, default: PetTypes.DOG })
   public pet?: PetTypes;
@@ -72,7 +73,7 @@ class User {
   })
   public email!: string;
 
-  @prop({ required: true })
+  @prop({ required: true, trim: true })
   public password!: string;
 
   @prop({ required: true, default: false })

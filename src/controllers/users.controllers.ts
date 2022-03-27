@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import User from "../models/user.model2";
 import { generateToken } from "../utils/token";
+import bcrypt from "bcryptjs";
 
 // GET /api/users
 // description: fetch all users from database
@@ -63,10 +64,11 @@ export const registerUser = asyncHandler(
       throw new Error(`${email} already exists ☹☹`);
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       fullName,
       email,
-      password,
+      password: hashedPassword,
     });
 
     if (user) {
