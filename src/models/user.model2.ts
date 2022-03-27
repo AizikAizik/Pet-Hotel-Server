@@ -1,4 +1,10 @@
-import { getModelForClass, pre, prop, Ref } from "@typegoose/typegoose";
+import {
+  DocumentType,
+  getModelForClass,
+  pre,
+  prop,
+  Ref,
+} from "@typegoose/typegoose";
 import bcrypt from "bcryptjs";
 
 enum PetTypes {
@@ -78,7 +84,10 @@ class User {
   @prop({ type: () => Pets })
   public pets?: Ref<Pets>[];
 
-  public async matchPasswords(enteredPassword: string): Promise<boolean> {
+  public async matchPasswords(
+    this: DocumentType<User>,
+    enteredPassword: string
+  ): Promise<boolean> {
     return await bcrypt.compare(enteredPassword, this.password);
   }
 }
