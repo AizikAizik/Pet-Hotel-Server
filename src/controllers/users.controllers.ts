@@ -46,3 +46,41 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     throw new Error(`wrong email or password`);
   }
 });
+
+// POST /api/users/register
+// description: Register a new user
+// public Route
+export const registerUser = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { fullName, email, password } = req.body;
+
+    // check to see if email already exists
+    const userExist = await User.findOne({ email });
+
+    // if email exists,the throw an Error
+    if (userExist) {
+      res.status(400);
+      throw new Error(`${email} already exists ☹☹`);
+    }
+
+    const user = await User.create({
+      fullName,
+      email,
+      password,
+    });
+
+    if (user) {
+      res.status(201);
+      res.send({
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token: generateToken(user.id),
+      });
+    } else {
+      res.status(400);
+      throw new Error("could not create user");
+    }
+  }
+);
