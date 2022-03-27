@@ -13,7 +13,7 @@ const users: Array<UserInput | UserDocument> = [
     email: "Isaac.Ogunleye@gmail.com",
     password: hashSync(masterPassword1),
     isAdmin: true,
-    pets: [{ name: "Bob" }, { name: "Flora", pet: "Cat" }],
+    pets: [{ name: "Bob" }, { name: "Pussy", pet: "Cat" }],
     address: {
       country: "Mauritius",
       state: "Black River",
