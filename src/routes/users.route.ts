@@ -4,11 +4,11 @@ import {
   loginUser,
   registerUser,
 } from "../controllers/users.controllers";
-//import { protect } from "../middleware/authMiddleware";
+import { protect } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.get("/", fetchAllUsers);
+router.get("/", protect, fetchAllUsers);
 router.post("/login", loginUser);
 router.post("/register", registerUser);
 

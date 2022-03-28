@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 // reads the env variables
 dotenv.config();
 
-// connect to the database
+//connect to the database
 const connectDB = async () => {
   try {
     const con = await mongoose.connect(process.env.MONGODB_URI!);
@@ -17,7 +17,7 @@ const connectDB = async () => {
 };
 
 export default connectDB;
-// import mongoose, {MongoClient, Db} from "mongoose";
+// import mongoose from "mongoose";
 
 // type MongoConnection = {
 //   client: MongoClient;
@@ -48,10 +48,10 @@ export default connectDB;
 //  * in development. This prevents connections growing exponentially
 //  * during API Route usage.
 //  */
-// let cached = global.mongoose;
+// let cached = global as typeof globalThis & { conn: any; promise: any };
 
 // if (!cached) {
-//   cached = global.mongoose = { conn: null, promise: null };
+//   cached.conn =  null, promise: null };
 // }
 
 // async function dbConnect() {
@@ -64,7 +64,7 @@ export default connectDB;
 //       bufferCommands: false,
 //     };
 
-//     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+//     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
 //       return mongoose;
 //     });
 //   }

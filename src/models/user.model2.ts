@@ -68,6 +68,7 @@ class User {
 
   @prop({
     required: true,
+    lowercase: true,
     unique: true,
     match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
   })
@@ -89,6 +90,7 @@ class User {
     this: DocumentType<User>,
     enteredPassword: string
   ): Promise<boolean> {
+    console.log(enteredPassword);
     return await bcrypt.compare(enteredPassword, this.password);
   }
 }

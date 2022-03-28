@@ -11,15 +11,15 @@ import bcrypt from "bcryptjs";
 export const fetchAllUsers = asyncHandler(
   async (req: Request, res: Response) => {
     // empty object is used to find all ....
-    const users = await User.find({});
-    res.send(users);
-
-    //   if (req.user.isAdmin) {
-    //     res.json(users);
-    //   } else {
-    //     res.status(401);
-    //     throw new Error(`Only Admin can access this resource`);
-    //   }
+    const users = await User.find({}).select("-password");
+    // res.send(users);
+    console.log(req.user);
+    if (req.user && req.user.isAdmin) {
+      res.json(users);
+    } else {
+      res.status(401);
+      throw new Error(`Only Admin can access this resource`);
+    }
   }
 );
 
