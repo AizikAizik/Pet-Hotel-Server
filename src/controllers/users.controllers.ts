@@ -25,17 +25,49 @@ export const fetchAllUsers = asyncHandler(
 // GET /api/users/profile
 // description: return users profile data
 // private Route for logged in users only
-export const userProfile = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById(req.user?.id)
-    .select("-password")
-    .select("-__v");
+export const getUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await User.findById(req.user?.id)
+      .select("-password")
+      .select("-__v");
 
-  if (user) res.send(user);
-  else {
-    res.status(404);
-    throw new Error("User not found!");
+    if (user) res.send(user);
+    else {
+      res.status(404);
+      throw new Error("User not found!");
+    }
   }
-});
+);
+
+// PUT /api/users/profile
+// description: update users profile data
+// private Route for logged in users only
+export const updateUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await User.findById(req.user?.id);
+
+    if (user) {
+      user.fullName = req.body.fullName || user.fullName;
+      user.email = req.body.email || user.email;
+      user.address = req.body.address || user.address;
+
+      const updatedUser = await user.save();
+
+      res.json({
+        id: updatedUser.id,
+        fullName: updatedUser.fullName,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        pets: updatedUser.pets,
+        address: updatedUser.address,
+        token: generateToken(updatedUser.id),
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found!");
+    }
+  }
+);
 
 // POST /api/users/login
 // DESC controller for authenticating user login
@@ -78,11 +110,11 @@ export const registerUser = asyncHandler(
       throw new Error(`${email} already exists ☹☹`);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       fullName,
       email,
-      password: hashedPassword,
+      password,
     });
 
     if (user) {

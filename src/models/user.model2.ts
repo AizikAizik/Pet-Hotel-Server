@@ -13,19 +13,6 @@ enum PetTypes {
   CAT = "Cat",
 }
 
-// @pre<User>("save", async function (next) {
-//   if (!this.isModified("password")) {
-//     next();
-//   }
-
-//   // generate salt rounds for hashing the passwords
-//   const salt = await bcrypt.genSalt(10);
-//   // set the password to the newly hashed password
-//   const hashedPassword = await bcrypt.hash(this.password, salt);
-//   this.password = hashedPassword;
-//   next();
-// })
-
 class Pets {
   @prop({ enum: PetTypes, default: PetTypes.DOG })
   public pet?: PetTypes;
@@ -38,23 +25,32 @@ class Pets {
 
   @prop()
   public image?: string;
+
+  @prop()
+  public age?: number;
+
+  @prop({ maxLength: 100 })
+  public likes?: string;
+
+  @prop({ maxLength: 100 })
+  public dislike?: string;
 }
 
-class Address {
+class UserAddress {
   @prop({ required: true })
   public country!: string;
 
   @prop({ required: true })
   public state!: string;
 
-  @prop({ required: true, min: -90, max: 90 })
-  public latitude!: number;
+  // @prop({ required: true, min: -90, max: 90 })
+  // public latitude!: number;
 
-  @prop({ required: true, min: -180, max: 180 })
-  public longitude!: number;
+  // @prop({ required: true, min: -180, max: 180 })
+  // public longitude!: number;
 
-  @prop()
-  public city?: string;
+  @prop({ required: true })
+  public city!: string;
 
   @prop()
   public street?: string;
@@ -63,6 +59,17 @@ class Address {
   public zipCode?: string;
 }
 
+@pre<User>("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  // generate salt rounds for hashing the passwords
+  const salt = await bcrypt.genSalt(10);
+  // set the password to the newly hashed password
+  const hashedPassword = await bcrypt.hash(this.password, salt);
+  this.password = hashedPassword;
+})
 class User extends TimeStamps {
   @prop({ required: true, minLength: 3 })
   public fullName!: string;
@@ -82,7 +89,7 @@ class User extends TimeStamps {
   public isAdmin?: boolean;
 
   @prop({ _id: false })
-  public address?: Address; // This is a single SubDocument
+  public address?: UserAddress; // This is a single SubDocument
 
   @prop({ type: () => Pets })
   public pets?: Ref<Pets>[];

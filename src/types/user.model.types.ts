@@ -6,16 +6,18 @@ interface UserAddress {
   country: string;
   state: string;
   zipCode?: string;
-  city?: string;
-  streetName?: string;
-  longitude: number;
-  latitude: number;
+  city: string;
+  street?: string;
 }
 
 interface Pets {
   pet?: pets;
   breed?: string;
   name: string;
+  age?: number;
+  likes?: string;
+  dislikes?: string;
+  image?: string;
 }
 
 export interface UserInput {

@@ -17,8 +17,7 @@ const users: Array<UserInput | UserDocument> = [
     address: {
       country: "Mauritius",
       state: "Black River",
-      longitude: 20.2807,
-      latitude: 57.3953,
+      city: "Flic-en-Flac",
     },
   },
   {
@@ -28,15 +27,14 @@ const users: Array<UserInput | UserDocument> = [
     address: {
       country: "Nigeria",
       state: "Lagos",
-      longitude: 6.5158,
-      latitude: 3.3898,
+      city: "Badagry",
     },
   },
   {
     fullName: "Joy Ajiboye",
     email: "JoyAjiboye@gmail.com",
     password: hashSync("123456789"),
-    pets: [{ name: "Tracie" }],
+    pets: [{ name: "Tracie", age: 1, dislikes: "Chocolate foods" }],
   },
   {
     fullName: "David Jackson",
