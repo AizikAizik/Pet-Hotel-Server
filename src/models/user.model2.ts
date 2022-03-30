@@ -5,6 +5,7 @@ import {
   prop,
   Ref,
 } from "@typegoose/typegoose";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import bcrypt from "bcryptjs";
 
 enum PetTypes {
@@ -62,7 +63,7 @@ class Address {
   public zipCode?: string;
 }
 
-class User {
+class User extends TimeStamps {
   @prop({ required: true, minLength: 3 })
   public fullName!: string;
 

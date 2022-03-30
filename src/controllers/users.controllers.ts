@@ -12,7 +12,6 @@ export const fetchAllUsers = asyncHandler(
   async (req: Request, res: Response) => {
     // empty object is used to find all ....
     const users = await User.find({}).select("-password");
-    // res.send(users);
     console.log(req.user);
     if (req.user && req.user.isAdmin) {
       res.json(users);
@@ -22,6 +21,21 @@ export const fetchAllUsers = asyncHandler(
     }
   }
 );
+
+// GET /api/users/profile
+// description: return users profile data
+// private Route for logged in users only
+export const userProfile = asyncHandler(async (req: Request, res: Response) => {
+  const user = await User.findById(req.user?.id)
+    .select("-password")
+    .select("-__v");
+
+  if (user) res.send(user);
+  else {
+    res.status(404);
+    throw new Error("User not found!");
+  }
+});
 
 // POST /api/users/login
 // DESC controller for authenticating user login

@@ -34,9 +34,10 @@ const protect = asyncHandler(
           | JwtPayload;
 
         // append the user object to the request headers
-        req.user = (await User.findById(decodeToken.id)) as
-          | UserDocument
-          | undefined;
+        req.user = (await User.findById(decodeToken.id).select(
+          "-password"
+        )) as unknown as UserDocument | undefined;
+
         //console.log(decodeToken);
         // go to the next middleware or controller
         next();
