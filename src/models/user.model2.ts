@@ -70,7 +70,7 @@ class UserAddress {
   const hashedPassword = await bcrypt.hash(this.password, salt);
   this.password = hashedPassword;
 })
-class User extends TimeStamps {
+export class User extends TimeStamps {
   @prop({ required: true, minLength: 3 })
   public fullName!: string;
 

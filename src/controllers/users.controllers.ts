@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import User from "../models/user.model2";
 import { generateToken } from "../utils/token";
-import bcrypt from "bcryptjs";
 
 // GET /api/users
 // description: fetch all users from database

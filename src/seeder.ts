@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import connectDB from "./config/db";
 import users from "./data/users";
 import User from "./models/user.model2";
+import Hotel from "./models/hotel.model";
+import hotels from "./data/hotels";
 
 //load env variables
 dotenv.config();
@@ -15,9 +17,13 @@ const importData = async () => {
     // delete all the data in Users and Diary Collection
     // await Diary.deleteMany();
     await User.deleteMany();
+    await Hotel.deleteMany();
 
     // insert data to users collection
     await User.insertMany(users);
+
+    // insert hotels data to hotels collection
+    await Hotel.insertMany(hotels);
     console.log("Data added successfully!");
     process.exit(0);
   } catch (error: any) {
@@ -30,6 +36,7 @@ const deleteData = async () => {
   try {
     //await Diary.deleteMany();
     await User.deleteMany();
+    await Hotel.deleteMany();
 
     console.log("Data deleted successfully!");
     process.exit(0);
