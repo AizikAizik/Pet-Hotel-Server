@@ -18,8 +18,8 @@ interface UserComment {
   comment: string;
   rating: number;
   user: {
-    _id: string;
-    email: string;
+    id: string;
+    email?: string;
     fullName: string;
   };
 }
@@ -35,7 +35,7 @@ export interface HotelInput {
   description: string;
   roomsAvailable: number;
   images?: string[];
-  hotelAddress: HotelAddress;
+  address: HotelAddress;
   comments?: UserComment[];
   hotelPackages: HotelPackage[];
 }

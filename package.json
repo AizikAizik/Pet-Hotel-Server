@@ -9,6 +9,7 @@
     "build": "tsc",
     "dev": "nodemon",
     "importData": "ts-node src/seeder.ts",
+    "importHotelData": "ts-node src/seeder.ts -h",
     "deleteData": "ts-node src/seeder.ts -d"
   },
   "repository": {

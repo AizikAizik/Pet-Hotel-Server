@@ -12,19 +12,30 @@ dotenv.config();
 connectDB();
 
 // import dummy data to Database
-const importData = async () => {
+const importUserData = async () => {
   try {
     // delete all the data in Users and Diary Collection
     // await Diary.deleteMany();
     await User.deleteMany();
-    await Hotel.deleteMany();
 
     // insert data to users collection
     await User.insertMany(users);
+    console.log("User Data added successfully!");
+    process.exit(0);
+  } catch (error: any) {
+    console.error(error.message);
+    process.exit(1);
+  }
+};
+
+const importHotelData = async () => {
+  try {
+    // delete all the data in Hotel Collection
+    await Hotel.deleteMany();
 
     // insert hotels data to hotels collection
     await Hotel.insertMany(hotels);
-    console.log("Data added successfully!");
+    console.log("Hotel Data added successfully!");
     process.exit(0);
   } catch (error: any) {
     console.error(error.message);
@@ -51,6 +62,8 @@ const deleteData = async () => {
 // node seeder.js -d || node seeder.js
 if (process.argv[2] === "-d") {
   deleteData();
+} else if (process.argv[2] === "-h") {
+  importHotelData();
 } else {
-  importData();
+  importUserData();
 }

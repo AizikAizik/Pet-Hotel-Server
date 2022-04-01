@@ -21,7 +21,7 @@ const hotels: Array<HotelInput> = [
         description: "Room comes with courtyard only for pets",
       },
     ],
-    hotelAddress: {
+    address: {
       country: "Spain",
       state: "Valencia",
       city: "Ciutat de les Arts i les Ciències",
@@ -34,7 +34,7 @@ const hotels: Array<HotelInput> = [
           "They delivered as promised 😇. I fully recommend this Pet Hotel to anyone still doubting",
         rating: 5,
         user: {
-          _id: "624432332317d2837bf4bbf7",
+          id: "6246bdc40b3353c355991152",
           fullName: "Isaac Ogunleye",
           email: "isaac.ogunleye@gmail.com",
         },
@@ -59,7 +59,7 @@ const hotels: Array<HotelInput> = [
         description: "Room comes with courtyard and toys for pets only",
       },
     ],
-    hotelAddress: {
+    address: {
       country: "United States",
       state: "New York",
       city: "Yonkers",
@@ -69,9 +69,9 @@ const hotels: Array<HotelInput> = [
     comments: [
       {
         comment: "The webcam feature wasn't always available sometimes 😡",
-        rating: 2.5,
+        rating: 2,
         user: {
-          _id: "624432332317d2837bf4bbf7",
+          id: "6246bdc40b3353c355991152",
           fullName: "Isaac Ogunleye",
           email: "isaac.ogunleye@gmail.com",
         },
@@ -81,7 +81,7 @@ const hotels: Array<HotelInput> = [
           "Watcing my pets play and make new friends with other cats was very nice to see from afar",
         rating: 4,
         user: {
-          _id: "624432332317d2837bf4bbfb",
+          id: "6246bdc40b3353c355991156",
           fullName: "Joy Ajiboye",
           email: "joyajiboye@gmail.com",
         },

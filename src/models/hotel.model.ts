@@ -1,6 +1,7 @@
 import {
   DocumentType,
   getModelForClass,
+  mongoose,
   pre,
   prop,
   Ref,
@@ -32,6 +33,17 @@ class HotelAddress {
   public zipCode?: string;
 }
 
+class UserCommentDetails {
+  @prop({ required: true })
+  public id!: string;
+
+  @prop({ required: true })
+  public fullName!: string;
+
+  @prop()
+  public email?: string;
+}
+
 class UserComment extends TimeStamps {
   @prop({ required: true })
   public comment!: string;
@@ -40,9 +52,10 @@ class UserComment extends TimeStamps {
   public rating!: number;
 
   @prop({
+    _id: false,
     required: true,
   })
-  public user!: Ref<User>;
+  public user!: UserCommentDetails;
 }
 
 class HotelPackage {
@@ -56,19 +69,6 @@ class HotelPackage {
   description!: string;
 }
 
-@pre<Hotel>("save", async function (next) {
-  this.num_of_reviews = this.comments?.length || 0;
-
-  let sum = 0;
-  this.comments?.forEach((comment) => {
-    let x = comment as UserComment;
-    sum += x.rating;
-  });
-
-  console.log(sum);
-  this.ratings = sum / this.num_of_reviews;
-  next();
-})
 class Hotel extends TimeStamps {
   @prop({ required: true })
   name!: string;
@@ -76,24 +76,47 @@ class Hotel extends TimeStamps {
   @prop({ required: true })
   description!: string;
 
+  @prop({ type: String, required: true, default: [] })
+  images!: mongoose.Types.Array<string>;
+
   @prop({ required: true, min: 0 })
   roomsAvailable!: number;
 
   @prop({ _id: false })
   public address?: HotelAddress;
 
-  @prop({ type: () => UserComment })
-  public comments?: Ref<UserComment>[];
+  @prop({ type: () => UserComment, _id: false })
+  public comments!: UserComment[];
 
-  @prop({ default: 0, min: 0 })
+  @prop({
+    min: 0,
+    default: function (this: Hotel) {
+      return this.comments?.length;
+    },
+  })
   public num_of_reviews?: number;
 
-  @prop({ type: () => HotelPackage })
+  @prop({ type: () => HotelPackage, _id: false })
   hotelPackages?: Ref<HotelPackage>[];
 
   // total average ratings for a specific hotel. Calculated field
-  @prop({ required: true, default: 0, min: 0 })
-  ratings!: number;
+  @prop({
+    min: 0,
+    default: function (this: Hotel) {
+      this.num_of_reviews = this.comments?.length || 0;
+
+      let sum = 0;
+      this.comments?.forEach((comment) => {
+        let x = comment as UserComment;
+        sum += x.rating;
+      });
+
+      console.log(sum);
+      this.ratings = sum / this.num_of_reviews;
+      return this.ratings;
+    },
+  })
+  ratings?: number;
 
   // after successful booking, decrease the number of available rooms
   public async decreaseNumberOfRooms(this: DocumentType<Hotel>) {
