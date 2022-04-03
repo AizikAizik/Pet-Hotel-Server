@@ -86,42 +86,67 @@ class Hotel extends TimeStamps {
   public address?: HotelAddress;
 
   @prop({ type: () => UserComment, _id: false })
-  public comments!: UserComment[];
+  public comments?: UserComment[];
 
   @prop({
     min: 0,
     default: function (this: Hotel) {
+      console.log({ comment: this.comments?.length });
       return this.comments?.length;
     },
   })
   public num_of_reviews?: number;
 
   @prop({ type: () => HotelPackage, _id: false })
-  hotelPackages?: Ref<HotelPackage>[];
+  public hotelPackages?: Ref<HotelPackage>[];
 
   // total average ratings for a specific hotel. Calculated field
   @prop({
     min: 0,
-    default: function (this: Hotel) {
-      this.num_of_reviews = this.comments?.length || 0;
+    // default: function (this: Hotel) {
+    //   this.num_of_reviews = this.comments?.length || 0;
 
-      let sum = 0;
-      this.comments?.forEach((comment) => {
-        let x = comment as UserComment;
-        sum += x.rating;
-      });
+    //   let sum = 0;
+    //   this.comments?.forEach((comment) => {
+    //     let x = comment as UserComment;
+    //     sum += x.rating;
+    //   });
 
-      console.log(sum);
-      this.ratings = sum / this.num_of_reviews;
-      return this.ratings;
-    },
+    //   console.log({ sum });
+    //   this.ratings = sum / this.num_of_reviews;
+    //   return this.ratings;
+    // },
+    default: 0,
   })
-  ratings?: number;
+  public ratings?: number;
 
   // after successful booking, decrease the number of available rooms
   public async decreaseNumberOfRooms(this: DocumentType<Hotel>) {
     if (this.roomsAvailable < 1) this.roomsAvailable = 0;
     else this.roomsAvailable = this.roomsAvailable--;
+
+    await this.save();
+  }
+
+  // update the number of reviews
+  public async updateNumOfRewiews(this: DocumentType<Hotel>) {
+    this.num_of_reviews = this.comments?.length || 0;
+
+    await this.save();
+  }
+
+  // update the average rating for a particular hotel document
+  public async updateAverageRatings(this: DocumentType<Hotel>) {
+    this.num_of_reviews = this.comments?.length || 0;
+
+    let sum = 0;
+    this.comments?.forEach((comment) => {
+      let x = comment as UserComment;
+      sum += x.rating;
+    });
+
+    console.log({ sum });
+    this.ratings = sum / this.num_of_reviews;
 
     await this.save();
   }
