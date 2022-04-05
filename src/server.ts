@@ -3,8 +3,11 @@ import morgan from "morgan";
 import connectDB from "./config/db";
 import notFoundError from "./errors/404";
 import globalError from "./errors/error";
+
+// import routes here
 import usersRoute from "./routes/users.route";
 import hotelRoute from "./routes/hotel.route";
+import petRoute from "./routes/pet.route";
 
 const app = express();
 
@@ -18,6 +21,7 @@ app.use(express.json());
 // use route middleware
 app.use("/api/users", usersRoute);
 app.use("/api/hotel", hotelRoute);
+app.use("/api/pets", petRoute);
 
 const PORT = process.env.PORT || 5000;
 
