@@ -1,9 +1,11 @@
-import { Ref } from "@typegoose/typegoose";
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { cloudinary } from "../config/cloudinary";
 import User from "../models/user.model2";
-import { Pets } from "../types/user.model.types";
+import {
+  deleteSinglePet,
+  doesPetWithIDExist,
+  isValidMongooseID,
+} from "../utils/dataUtils";
 import { uploadSingleImageFile } from "../utils/uploadImages";
 
 // GET /api/pets
@@ -52,9 +54,44 @@ export const createNewPet = asyncHandler(
       newPet.name = name;
       console.log(newPet);
       user.pets?.push(newPet);
-      const updatedPet = await user.save();
+      await user.save();
 
-      res.json(updatedPet.pets);
+      res.json(newPet);
+    }
+  }
+);
+
+// DELETE /api/pets/:petID
+// description: delete pet details of user based on the pet ID passed as parameter
+// private route for logged in users
+export const deleteUsersPet = asyncHandler(
+  async (req: Request, res: Response) => {
+    const petID = req.params.petID;
+    const isValid = isValidMongooseID(petID);
+
+    if (!isValid) {
+      res.status(401);
+      throw new Error("Invalid ID. Pet with that ID does not exist");
+    }
+
+    const user = await User.findById(req.user?.id);
+
+    const doesPetExist = await doesPetWithIDExist(user, petID);
+
+    if (!doesPetExist) {
+      res.status(404);
+      throw new Error("You do not have a pet with that ID!");
+    }
+
+    if (user) {
+      const pets = await deleteSinglePet(user, petID);
+      user.pets = pets;
+      await user.save();
+
+      res.status(200).json({ message: "Pet Deleted Successfully" });
+    } else {
+      res.status(401);
+      throw new Error("You do not own this pet");
     }
   }
 );
