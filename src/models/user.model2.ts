@@ -33,7 +33,7 @@ class Pets {
   public likes?: string;
 
   @prop({ maxLength: 100 })
-  public dislike?: string;
+  public dislikes?: string;
 }
 
 class UserAddress {

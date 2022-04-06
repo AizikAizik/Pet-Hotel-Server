@@ -10,7 +10,7 @@ interface UserAddress {
   street?: string;
 }
 
-interface Pets {
+export interface Pets {
   pet?: pets;
   breed?: string;
   name: string;
