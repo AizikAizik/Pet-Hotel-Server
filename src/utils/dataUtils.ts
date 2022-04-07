@@ -9,6 +9,15 @@ export async function doesPetWithIDExist(user: any, id: string) {
   return data ? true : false;
 }
 
+export async function getPetWithID(user: any, id: string) {
+  const data = user.pets?.find((pet: any) => {
+    // @ts-ignore
+    return pet.id === id;
+  });
+
+  return data;
+}
+
 export async function deleteSinglePet(user: any, petID: string) {
   const pets = user.pets?.filter((pet: any) => {
     return pet.id !== petID;

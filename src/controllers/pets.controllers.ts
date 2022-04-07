@@ -4,6 +4,7 @@ import User from "../models/user.model2";
 import {
   deleteSinglePet,
   doesPetWithIDExist,
+  getPetWithID,
   isValidMongooseID,
 } from "../utils/dataUtils";
 import { uploadSingleImageFile } from "../utils/uploadImages";
@@ -93,5 +94,51 @@ export const deleteUsersPet = asyncHandler(
       res.status(401);
       throw new Error("You do not own this pet");
     }
+  }
+);
+
+// PUT /api/pets/:petID
+// description: update pet details of user based on the pet ID passed as parameter
+// private route for logged in users
+export const updateUsersPet = asyncHandler(
+  async (req: Request, res: Response) => {
+    const petID = req.params.petID;
+    const isValid = isValidMongooseID(petID);
+
+    if (!isValid) {
+      res.status(401);
+      throw new Error("Invalid ID. Pet with that ID does not exist");
+    }
+
+    const user = await User.findById(req.user?.id);
+
+    const doesPetExist = await getPetWithID(user, petID);
+
+    if (!doesPetExist) {
+      res.status(404);
+      throw new Error("You do not have a pet with that ID!");
+    }
+
+    const { name, breed, pet, image, age, likes, dislikes } = req.body;
+
+    if (name) doesPetExist.name = name;
+    if (age) doesPetExist.age = age;
+    if (breed) doesPetExist.breed = breed;
+    if (likes) doesPetExist.likes = likes;
+    if (dislikes) doesPetExist.dislikes = dislikes;
+    if (pet) doesPetExist.pet = pet;
+    if (image) {
+      const uploadedResponse = await uploadSingleImageFile(image);
+      doesPetExist.image = uploadedResponse.secure_url;
+    }
+
+    let userData = { _id: petID };
+    let dataToBeUpdated = { ...doesPetExist };
+    await User.findOneAndUpdate(
+      { "pets._id": userData._id },
+      { $set: { "pets.$": dataToBeUpdated } }
+    );
+
+    res.status(200).send(doesPetExist);
   }
 );
