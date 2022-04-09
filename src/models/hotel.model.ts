@@ -69,7 +69,7 @@ class HotelPackage {
   description!: string;
 }
 
-class Hotel extends TimeStamps {
+export class Hotel extends TimeStamps {
   @prop({ required: true })
   name!: string;
 

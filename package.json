@@ -10,6 +10,7 @@
     "dev": "nodemon",
     "importData": "ts-node src/seeder.ts",
     "importHotelData": "ts-node src/seeder.ts -h",
+    "importBookingData": "ts-node src/seeder.ts -b",
     "deleteData": "ts-node src/seeder.ts -d"
   },
   "repository": {
@@ -26,10 +27,12 @@
     "@typegoose/typegoose": "^9.7.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.29.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.2",
     "mongoose": "^6.2.7",
     "morgan": "^1.10.0",
     "underscore": "^1.13.2"

@@ -38,7 +38,7 @@ const protect = asyncHandler(
           "-password"
         )) as unknown as UserDocument | undefined;
 
-        //console.log(decodeToken);
+        //console.log(req.user);
         // go to the next middleware or controller
         next();
       } catch (e: any) {

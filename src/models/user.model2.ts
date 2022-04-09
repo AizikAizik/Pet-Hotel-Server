@@ -13,7 +13,7 @@ enum PetTypes {
   CAT = "Cat",
 }
 
-class Pets {
+export class Pets {
   @prop({ enum: PetTypes, default: PetTypes.DOG })
   public pet?: PetTypes;
 
@@ -42,12 +42,6 @@ class UserAddress {
 
   @prop({ required: true })
   public state!: string;
-
-  // @prop({ required: true, min: -90, max: 90 })
-  // public latitude!: number;
-
-  // @prop({ required: true, min: -180, max: 180 })
-  // public longitude!: number;
 
   @prop({ required: true })
   public city!: string;

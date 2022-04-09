@@ -8,6 +8,7 @@ import globalError from "./errors/error";
 import usersRoute from "./routes/users.route";
 import hotelRoute from "./routes/hotel.route";
 import petRoute from "./routes/pet.route";
+import bookingRoute from "./routes/booking.route";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/api/users", usersRoute);
 app.use("/api/hotel", hotelRoute);
 app.use("/api/pets", petRoute);
+app.use("/api/bookings", bookingRoute);
 
 const PORT = process.env.PORT || 5000;
 

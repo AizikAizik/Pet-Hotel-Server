@@ -3,7 +3,9 @@ import connectDB from "./config/db";
 import users from "./data/users";
 import User from "./models/user.model2";
 import Hotel from "./models/hotel.model";
+import Booking from "./models/booking.model";
 import hotels from "./data/hotels";
+import bookings from "./data/bookings";
 
 //load env variables
 dotenv.config();
@@ -43,6 +45,19 @@ const importHotelData = async () => {
   }
 };
 
+const importBookings = async () => {
+  try {
+    await Booking.deleteMany();
+
+    await Booking.insertMany(bookings);
+    console.log("Bookings Data added successfully!");
+    process.exit(0);
+  } catch (error: any) {
+    console.error(error.message);
+    process.exit(1);
+  }
+};
+
 const deleteData = async () => {
   try {
     //await Diary.deleteMany();
@@ -64,6 +79,8 @@ if (process.argv[2] === "-d") {
   deleteData();
 } else if (process.argv[2] === "-h") {
   importHotelData();
+} else if (process.argv[2] === "-b") {
+  importBookings();
 } else {
   importUserData();
 }
