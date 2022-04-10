@@ -10,7 +10,7 @@ export const fetchAllUsers = asyncHandler(
   async (req: Request, res: Response) => {
     // empty object is used to find all ....
     const users = await User.find({}).select("-password");
-    console.log(req.user);
+    // console.log(req.user);
     if (req.user && req.user.isAdmin) {
       res.json(users);
     } else {

@@ -16,8 +16,6 @@ import {
 import { HotelPackages } from "../types/hotel.model.types";
 import {
   validateCheckInDate,
-  convertDateToIsoStringFormat,
-  getCurrentFormatedDate,
   getDifferenceInDays,
   validateCheckOutDate,
 } from "../utils/dateUtils";

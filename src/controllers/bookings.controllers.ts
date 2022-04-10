@@ -74,3 +74,65 @@ export const createPetBooking = AsyncHandler(
     res.status(201).json(createdBooking);
   }
 );
+
+// GET /api/bookings
+// description: view all available bookings made by a user
+// private Route for logged in users
+export const getMyBookings = AsyncHandler(
+  async (req: Request, res: Response) => {
+    const mybookings = await Booking.find({ user: req.user!.id }).populate({
+      path: "hotel",
+      select: "_id name address",
+    });
+
+    res.status(200).send(mybookings);
+  }
+);
+
+// GET /api/bookings/:bookingID
+// description: view details about a particular booking
+// private Route for logged in users to see more info about a specific booking
+export const getSingleBooking = AsyncHandler(
+  async (req: Request, res: Response) => {
+    const singleBooking = await Booking.findById(req.params.bookingID)
+      .populate({
+        path: "hotel",
+        select: "_id name description address ratings",
+      })
+      .populate({ path: "user", select: "fullName email address" });
+
+    if (singleBooking) {
+      if (req.user!._id.toString() === singleBooking.id || req.user!.isAdmin) {
+        res.status(200).send(singleBooking);
+      } else {
+        res.status(401);
+        throw new Error(
+          "Only Admins can view orders that doesn't belong to them"
+        );
+      }
+    } else {
+      res.status(404);
+      throw new Error("Booking not found");
+    }
+  }
+);
+
+// GET /api/bookings/getall
+// description: view all available bookings made by all users
+// private Route for admin users to view all available bookings
+export const getAllBookings = AsyncHandler(
+  async (req: Request, res: Response) => {
+    if (req.user!.isAdmin) {
+      const allBookings = await Booking.find({})
+        .populate({ path: "user", select: "-password" })
+        .populate({
+          path: "hotel",
+          select: "_id name description address ratings",
+        });
+      res.status(200).send(allBookings);
+    } else {
+      res.status(403);
+      throw new Error("You are Forbidden!!. Only admins can view all bookings");
+    }
+  }
+);

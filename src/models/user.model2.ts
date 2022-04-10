@@ -92,11 +92,11 @@ export class User extends TimeStamps {
     this: DocumentType<User>,
     enteredPassword: string
   ): Promise<boolean> {
-    console.log(enteredPassword);
     return await bcrypt.compare(enteredPassword, this.password);
   }
 }
 
 const userModel = getModelForClass(User);
+//const petModel = getModelForClass(Pets);
 
 export default userModel;
