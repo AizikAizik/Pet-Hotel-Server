@@ -136,3 +136,32 @@ export const getAllBookings = AsyncHandler(
     }
   }
 );
+
+// DELETE /api/bookings/:bookingID
+// description: cancel a particular booking.
+// bookings can only be cancelled if the paymentStatus is "not paid"
+// private route for logged in users and admins
+export const cancelBooking = AsyncHandler(
+  async (req: Request, res: Response) => {
+    const singleBooking = await Booking.findById(req.params.bookingID);
+
+    if (singleBooking) {
+      if (
+        (req.user!._id.toString() === singleBooking.user!.toString() ||
+          req.user!.isAdmin) &&
+        !singleBooking.isPaid!
+      ) {
+        await singleBooking.deleteOne({
+          _id: singleBooking._id,
+        });
+        res.status(200).send({ message: "Booking cancelled Successfully!" });
+      } else {
+        res.status(403);
+        throw new Error("You cannot delete this booking");
+      }
+    } else {
+      res.status(404);
+      throw new Error("Booking not found");
+    }
+  }
+);
