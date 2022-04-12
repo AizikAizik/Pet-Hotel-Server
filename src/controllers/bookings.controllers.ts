@@ -165,3 +165,29 @@ export const cancelBooking = AsyncHandler(
     }
   }
 );
+
+// PUT /api/bookings/:bookingID/pay
+// description: update a user booking to be paid for.
+// private route for logged in users
+export const payForBookings = AsyncHandler(
+  async (req: Request, res: Response) => {
+    const booking = await Booking.findById(req.params.bookingID);
+
+    if (booking) {
+      booking.isPaid = true;
+      booking.paidAt = new Date();
+      booking.paymentResult = {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.updateTime,
+        emailAddress: req.body.payer.email_address,
+      };
+
+      const updatedBooking = await booking.save();
+      res.status(200).json(updatedBooking);
+    } else {
+      res.status(404);
+      throw new Error("Booking not found");
+    }
+  }
+);
