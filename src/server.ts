@@ -3,6 +3,8 @@ import morgan from "morgan";
 import connectDB from "./config/db";
 import notFoundError from "./errors/404";
 import globalError from "./errors/error";
+import cors from "cors";
+import helmet from "helmet";
 
 // import routes here
 import usersRoute from "./routes/users.route";
@@ -18,6 +20,25 @@ app.use(morgan("dev"));
 
 // middleware to pass json body data
 app.use(express.json());
+
+app.use(helmet());
+
+const allowedDomains = [process.env.CORS_DOMAIN, "http://localhost:3000"];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // bypass the requests with no origin (like curl requests, mobile apps, etc )
+      if (!origin) return callback(null, true);
+
+      if (allowedDomains.indexOf(origin) === -1) {
+        var msg = `This site ${origin} does not have an access. Only specific domains are allowed to access it.`;
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 // use route middleware
 app.use("/api/users", usersRoute);
