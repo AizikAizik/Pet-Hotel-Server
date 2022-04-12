@@ -183,6 +183,9 @@ export const payForBookings = AsyncHandler(
         emailAddress: req.body.payer.email_address,
       };
 
+      const hotel = await Hotel.findById(booking.pet);
+      await hotel?.decreaseNumberOfRooms();
+
       const updatedBooking = await booking.save();
       res.status(200).json(updatedBooking);
     } else {

@@ -145,7 +145,6 @@ export class Hotel extends TimeStamps {
       sum += x.rating;
     });
 
-    console.log({ sum });
     this.ratings = sum / this.num_of_reviews;
 
     await this.save();
