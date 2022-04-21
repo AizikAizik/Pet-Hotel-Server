@@ -15,6 +15,28 @@ export const getAllHotels = asyncHandler(
   }
 );
 
+// GET /api/hotel/:hotelID
+// description: get single hotel from the database
+// public route
+export const getSingleBooking = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { hotelID } = req.params;
+
+    if (!isValidMongooseID(hotelID)) {
+      res.status(500);
+      throw new Error("hotelID is an invalid mongoDB id");
+    }
+    const hotel = await Hotel.findById(hotelID);
+
+    if (hotel) {
+      res.status(200).json(hotel);
+    } else {
+      res.status(401);
+      throw new Error("Hotel with that ID not found");
+    }
+  }
+);
+
 // POST /api/hotel
 // description: add a new hotel with available details to the database
 // private route. Only logged in admin users can add a new hotel.

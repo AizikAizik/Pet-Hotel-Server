@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
 import Booking from "../models/booking.model";
 import Hotel from "../models/hotel.model";
-import { isValidMongooseID } from "../utils/dataUtils";
+import { getPetWithID, isValidMongooseID } from "../utils/dataUtils";
+import _ from "underscore";
 
 // POST /api/bookings
 // description: booking a new accommodation for pets
@@ -103,7 +104,12 @@ export const getSingleBooking = AsyncHandler(
 
     if (singleBooking) {
       if (req.user!._id.toString() === singleBooking.id || req.user!.isAdmin) {
-        res.status(200).send(singleBooking);
+        const petDetails = await getPetWithID(
+          req.user,
+          singleBooking.pet!.toString()
+        );
+        //const response = _.extendOwn(singleBooking, petDetails);
+        res.status(200).send({ singleBooking, petDetails });
       } else {
         res.status(401);
         throw new Error(
