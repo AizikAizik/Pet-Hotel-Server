@@ -55,6 +55,11 @@ app.get("/", async (_: Request, res: Response) => {
   });
 });
 
+// get Paypal Client ID
+app.get("/api/config/paypal", (_, res: Response) =>
+  res.send({ paypalId: process.env.PAYPAL_CLIENT_ID })
+);
+
 //run error middlewares
 app.use(notFoundError);
 app.use(globalError);

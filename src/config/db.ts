@@ -17,6 +17,7 @@ const connectDB = async () => {
 };
 
 export default connectDB;
+
 // import mongoose from "mongoose";
 
 // type MongoConnection = {

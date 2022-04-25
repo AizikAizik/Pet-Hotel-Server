@@ -189,7 +189,7 @@ export const payForBookings = AsyncHandler(
         emailAddress: req.body.payer.email_address,
       };
 
-      const hotel = await Hotel.findById(booking.pet);
+      const hotel = await Hotel.findById(booking.hotel);
       await hotel?.decreaseNumberOfRooms();
 
       const updatedBooking = await booking.save();
