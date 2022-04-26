@@ -97,6 +97,7 @@ export class User extends TimeStamps {
 }
 
 const userModel = getModelForClass(User);
+
 //const petModel = getModelForClass(Pets);
 
 export default userModel;

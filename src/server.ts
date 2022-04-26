@@ -23,11 +23,7 @@ app.use(express.json());
 
 app.use(helmet());
 
-const allowedDomains = [
-  process.env.CORS_DOMAIN,
-  "http://localhost:3000",
-  "https://www.sandbox.paypal.com/xoplatform/logger/api/logger",
-];
+const allowedDomains = [process.env.CORS_DOMAIN, "http://localhost:3000"];
 
 app.use(
   cors({
