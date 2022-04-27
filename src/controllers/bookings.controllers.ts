@@ -103,7 +103,11 @@ export const getSingleBooking = AsyncHandler(
       .populate({ path: "user", select: "fullName email address" });
 
     if (singleBooking) {
-      if (req.user!._id.toString() === singleBooking.id || req.user!.isAdmin) {
+      if (
+        //@ts-ignore
+        req.user!._id.toString() === singleBooking.user!._id.toString() ||
+        req.user!.isAdmin
+      ) {
         const petDetails = await getPetWithID(
           req.user,
           singleBooking.pet!.toString()
